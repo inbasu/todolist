@@ -9,7 +9,7 @@
                 {{ form.name }}
                 {% csrf_token %}
                 <input type="hidden" name='action' value="add">
-                <button type="submit" next.hidden="add">Add</button>
+                <button class='r-btn' type="submit" next.hidden="add">Add</button>
             </td>
         </form>
     </tr>
@@ -39,7 +39,7 @@
                 <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name='action' value="clear-all">
-                    <button type="submit">Hide Doned</button>
+                    <button class='r-btn' type="submit">Hide Doned</button>
                 </form>
             </td>
         </tr>   
