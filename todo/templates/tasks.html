@@ -1,0 +1,49 @@
+{% extends 'layers/layout.html' %}
+
+{% block content %}
+
+    <table>
+    <tr>
+         <form method="post">
+            <td class="main-td">
+                {{ form.name }}
+                {% csrf_token %}
+                <input type="hidden" name='action' value="add">
+                <button type="submit" next.hidden="add">Add</button>
+            </td>
+        </form>
+    </tr>
+    
+    {% for task in tasks %}
+        <tr>
+            <td>        
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name='action' value="del">
+                    <input type="hidden" name='id' value='{{ task.id }}'>
+                    <button class="task" type="submit">
+                    {% if task.done %}
+                        <s>{{ task.name }}</s> 
+                    {% else %}
+                        {{ task.name }}
+                    {% endif %}    
+                        
+
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name='action' value="clear-all">
+                    <button type="submit">Hide Doned</button>
+                </form>
+            </td>
+        </tr>   
+
+    </table>
+
+{% endblock content %}

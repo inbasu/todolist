@@ -1,0 +1,30 @@
+{% extends 'layers/layout.html' %}
+
+{% block content %}
+
+<table>
+    {% for task in tasks %}
+        <tr>
+            <td class="main-td">{{ task.name }}</td>
+            <td>
+                <div class="button-row">     
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name='action' value="back">
+                        <input type="hidden" name='id' value='{{ task.id }}'>
+                        <button type="submit">Back</button>
+                    </form>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name='action' value="del">
+                        <input type="hidden" name='id' value='{{ task.id }}'>
+                        <button class="del" type="submit">Del</button>
+                    </form>
+                </div>   
+            </td>
+
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

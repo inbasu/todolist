@@ -1,0 +1,65 @@
+button {
+    width: 100px;
+}
+
+.task {
+    font-size: 16px;
+    padding: 0;
+    border: none;
+    background: none;
+    max-width: none;
+}
+
+table {
+    padding-top: 10%;
+    margin: auto;
+    max-width: 800px;
+    table-layout: fixed;
+    text-align: center;
+  }
+
+
+.main-td {
+    display: inline-block;
+    font-size: 20px;
+    width: 80%;
+    min-width: 450px;
+}
+
+.button-row {
+    display: flex;
+    width: 80%;
+}
+
+.button-row button {
+    margin: 0;
+    height: 100%;
+    width: 50px;
+}
+
+/* Menu */
+
+.menu {
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
+.menu a {
+    text-decoration: none;
+    padding: 0% 3%;
+}
+
+#name-form {
+    max-width: 700px;
+    font-size: 20px;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+#name-form:focus {
+    max-width: 700px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none !important;
+}
