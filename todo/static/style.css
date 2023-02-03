@@ -17,7 +17,6 @@ button {
 }
 
 .buttons {
-
     padding: 10px 50px;
     display: flex;
     justify-content: space-between;
@@ -32,6 +31,10 @@ button {
     background-color: salmon;
     border-radius: 20px;
   }
+
+.btn-home {
+    padding-bottom: 20px;
+}
 
 .task-list {
     border-radius: 5px;

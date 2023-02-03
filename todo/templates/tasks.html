@@ -12,7 +12,7 @@
     <div class='buttons'>
         <form method="post">
             {% csrf_token %}
-            <input type="hidden" name='action' value="clear-all">
+            <input type="hidden" name='action' value="clear-list">
             <button type="submit">Hide Doned</button>
         </form>
         <form action="{% url 'archive' %}" method="get">
@@ -24,7 +24,7 @@
 
                 <form method="post">
                     {% csrf_token %}
-                    <input type="hidden" name='action' value="del">
+                    <input type="hidden" name='action' value="done-undone">
                     <input type="hidden" name='id' value='{{ task.id }}'>
                     <button class="task" type="submit">
                     {% if task.done %}

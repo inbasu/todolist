@@ -2,7 +2,11 @@
 
 {% block content %}
 
-
+    <div class='btn-home'>   
+    <form action="{% url 'archive' %}" method="get">
+        <button  type="submit" formaction="{% url 'tasks' %}">Home</button>
+    </form> 
+    </div>
     <div class="task-list">
     {% for task in tasks %}
         <div class="arch-task">

@@ -38,11 +38,11 @@ class TasksView(TemplateView):
                 description=description,
                 author=author,
             )
-        elif request.POST["action"] == "del":
+        elif request.POST["action"] == "done-undone":
             id = request.POST["id"]
             task = Task.objects.get(pk=id)
             task.done_undone()
-        elif request.POST["action"] == "clear-all":
+        elif request.POST["action"] == "clear-list":
             for task in Task.objects.filter(author=request.user).filter(in_list=True):
                 if task.done:
                     task.in_list = False
@@ -72,7 +72,6 @@ class ArchiveView(TemplateView):
             task = Task.objects.get(pk=id)
             task.in_list = True
             task.save()
-
         return redirect("archive")
 
 
@@ -83,14 +82,16 @@ class LoginView(TemplateView):
         if not request.user.is_anonymous:
             return redirect("tasks")
         context = {}
+        context["name"] = "Login"
         form = LoginForm()
         context["form"] = form
         return render(request, template_name=self.template, context=context)
 
     def post(self, request, *args, **kwargs):
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(username=username, password=password)
+        user = authenticate(
+            username=request.POST["username"],
+            password=request.POST["password"],
+        )
         if user is not None:
             login(request, user)
             return redirect("tasks")
