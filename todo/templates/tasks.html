@@ -2,21 +2,26 @@
 
 {% block content %}
 
-    <table>
-    <tr>
+
          <form method="post">
-            <td class="main-td">
                 {{ form.name }}
                 {% csrf_token %}
                 <input type="hidden" name='action' value="add">
                 <button type="submit" next.hidden="add">Add</button>
-            </td>
         </form>
-    </tr>
-    
-    {% for task in tasks %}
-        <tr>
-            <td>        
+    <div class='buttons'>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name='action' value="clear-all">
+            <button type="submit">Hide Doned</button>
+        </form>
+        <form action="{% url 'archive' %}" method="get">
+            <button type="submit" formaction="{% url 'archive' %}">Archive</button>
+        </form> 
+    </div>
+        <div class="task-list">
+        {% for task in tasks %}
+
                 <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name='action' value="del">
@@ -31,19 +36,9 @@
 
                     </button>
                 </form>
-            </td>
-        </tr>
         {% endfor %}
-        <tr>
-            <td>
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name='action' value="clear-all">
-                    <button type="submit">Hide Doned</button>
-                </form>
-            </td>
-        </tr>   
+        </div>
 
-    </table>
+        
 
 {% endblock content %}
