@@ -1,41 +1,71 @@
+
+
 button {
+    padding: auto;
     width: 100px;
 }
 
 .task {
-    font-size: 16px;
+    font-size: 20px;
+    margin: 0;
     padding: 0;
     border: none;
     background: none;
-    max-width: none;
+    background-color: aliceblue;
+    width: 320px;
+    text-align: left;
 }
 
-table {
-    padding-top: 10%;
+.buttons {
+
+    padding: 10px 50px;
+    display: flex;
+    justify-content: space-between;
+
+}
+.task-conteiner {
+    padding: 40px;
     margin: auto;
-    max-width: 800px;
+    width: 330px;
     table-layout: fixed;
     text-align: center;
+    background-color: salmon;
+    border-radius: 20px;
   }
 
-
-.main-td {
-    display: inline-block;
-    font-size: 20px;
-    width: 80%;
-    min-width: 450px;
+.task-list {
+    border-radius: 5px;
+    background-color: aliceblue;
 }
 
-.button-row {
+.arch-task {
+    width: 320px;
+    text-align: left;
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+
+.button-row{
+    margin: 2px 0;
+    left:200px;
     display: flex;
-    width: 80%;
+    
+
+}
+.button-row button{
+    width: 50px;
+    height: 22px;
 }
 
-.button-row button {
+
+.arch-task p{
+    text-align: left;
+    padding: 2px;
     margin: 0;
-    height: 100%;
-    width: 50px;
+    font-size: 20px;
 }
+
 
 /* Menu */
 
@@ -51,15 +81,22 @@ table {
 }
 
 #name-form {
-    max-width: 700px;
+    height: 28px;
+    border-radius: 5px;
+    padding: 0;
+    width: 220px;
     font-size: 20px;
     border: none;
     border-bottom: 1px solid black;
+    background-color: aliceblue;
 }
 
 #name-form:focus {
+    height: 28px;
+    border-radius: 5px;
     max-width: 700px;
     border: none;
     border-bottom: 1px solid black;
     outline: none !important;
+    background-color: aliceblue;
 }

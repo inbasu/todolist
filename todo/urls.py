@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from .views import TaskView, ArchiveView
+from .views import TasksView, ArchiveView, LoginView
 
 urlpatterns = [
-    path("", TaskView.as_view(), name="tasks"),
+    path("", TasksView.as_view(), name="tasks"),
     path("arch/", ArchiveView.as_view(), name="archive"),
+    path("login/", LoginView.as_view(), name="login"),
 ]

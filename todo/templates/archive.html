@@ -2,11 +2,11 @@
 
 {% block content %}
 
-<table>
+
+    <div class="task-list">
     {% for task in tasks %}
-        <tr>
-            <td class="main-td">{{ task.name }}</td>
-            <td>
+        <div class="arch-task">
+            <p>{{ task.name }}<p>
                 <div class="button-row">     
                     <form method="post">
                         {% csrf_token %}
@@ -20,11 +20,10 @@
                         <input type="hidden" name='id' value='{{ task.id }}'>
                         <button class="del" type="submit">Del</button>
                     </form>
-                </div>   
-            </td>
-
-        </tr>
+                </div>  
+        </div> 
     {% endfor %}
-</table>
+    </div> 
+
 
 {% endblock content %}

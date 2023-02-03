@@ -1,9 +1,13 @@
 {% block menu %}
 
 <div class="menu">
-
-    <a href="{% url 'tasks' %}">...Home...</a>
-    <a href="{% url 'archive' %}">...Archive...</a>
+    {% if name == 'tasks'  %}
+        <a href="{% url 'archive' %}">...Archive...</a>
+    {% elif name == 'archive' %}
+        <a href="{% url 'tasks' %}">...Home...</a>
+    {% else %}
+    {% endif %}
+    
 
 </div>
 

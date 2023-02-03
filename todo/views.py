@@ -1,8 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
 
-from .forms import TaskForm
+from .forms import TaskForm, LoginForm
+
 from .models import Task
 
 
@@ -11,12 +14,16 @@ def test(request):
     return HttpResponse("<h1>Test</h1>")
 
 
-class TaskView(TemplateView):
+class TasksView(TemplateView):
+    name = "tasks"
     template = "tasks.html"
 
     def get(self, request, *args, **kvargs):
+        if request.user.is_anonymous:
+            return redirect("login")
         context = {}
-        tasks = Task.objects.filter(in_list=True)
+        context["name"] = self.name
+        tasks = Task.objects.filter(author=request.user).filter(in_list=True)
         context["tasks"] = tasks
         context["form"] = TaskForm()
         return render(request, template_name=self.template, context=context)
@@ -25,13 +32,18 @@ class TaskView(TemplateView):
         if request.POST["action"] == "add":
             name = request.POST["name"]
             description = request.POST.get("description", "...")
-            Task.objects.create(name=name, description=description)
+            author = request.user
+            Task.objects.create(
+                name=name,
+                description=description,
+                author=author,
+            )
         elif request.POST["action"] == "del":
             id = request.POST["id"]
             task = Task.objects.get(pk=id)
             task.done_undone()
         elif request.POST["action"] == "clear-all":
-            for task in Task.objects.filter(in_list=True):
+            for task in Task.objects.filter(author=request.user).filter(in_list=True):
                 if task.done:
                     task.in_list = False
                     task.save()
@@ -39,11 +51,15 @@ class TaskView(TemplateView):
 
 
 class ArchiveView(TemplateView):
+    name = "archive"
     template = "archive.html"
 
     def get(self, request, *args, **kvargs):
+        if request.user.is_anonymous:
+            return redirect("login")
         context = {}
-        tasks = Task.objects.filter(in_list=False)
+        context["name"] = self.name
+        tasks = Task.objects.filter(author=request.user).filter(in_list=False)
         context["tasks"] = tasks
         return render(request, template_name=self.template, context=context)
 
@@ -58,3 +74,24 @@ class ArchiveView(TemplateView):
             task.save()
 
         return redirect("archive")
+
+
+class LoginView(TemplateView):
+    template = "registration/login.html"
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_anonymous:
+            return redirect("tasks")
+        context = {}
+        form = LoginForm()
+        context["form"] = form
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request, *args, **kwargs):
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("tasks")
+        return redirect("login")
