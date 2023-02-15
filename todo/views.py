@@ -21,27 +21,26 @@ class TasksView(TemplateView):
     def get(self, request, *args, **kvargs):
         if request.user.is_anonymous:
             return redirect("login")
+        tasks = Task.objects.filter(author=request.user).filter(in_list=True)
         context = {}
         context["name"] = self.name
-        tasks = Task.objects.filter(author=request.user).filter(in_list=True)
         context["tasks"] = tasks
         context["form"] = TaskForm()
         return render(request, template_name=self.template, context=context)
 
     def post(self, request, *args, **kvargs):
         if request.POST["action"] == "add":
-            name = request.POST["name"]
-            description = request.POST.get("description", "...")
-            author = request.user
-            Task.objects.create(
-                name=name,
-                description=description,
-                author=author,
-            )
+            form = TaskForm(request.POST)
+            if form.is_valid():
+                task = form.save(commit=False)
+                task.author = request.user
+                task.save()
+
         elif request.POST["action"] == "done-undone":
             id = request.POST["id"]
             task = Task.objects.get(pk=id)
             task.done_undone()
+
         elif request.POST["action"] == "clear-list":
             for task in Task.objects.filter(author=request.user).filter(in_list=True):
                 if task.done:
