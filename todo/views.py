@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import TaskForm, LoginForm
 
@@ -14,13 +15,11 @@ def test(request):
     return HttpResponse("<h1>Test</h1>")
 
 
-class TasksView(TemplateView):
+class TasksView(LoginRequiredMixin, TemplateView):
     name = "tasks"
     template = "tasks.html"
 
     def get(self, request, *args, **kvargs):
-        if request.user.is_anonymous:
-            return redirect("login")
         tasks = Task.objects.filter(author=request.user).filter(in_list=True)
         context = {}
         context["name"] = self.name
@@ -49,13 +48,11 @@ class TasksView(TemplateView):
         return redirect("tasks")
 
 
-class ArchiveView(TemplateView):
+class ArchiveView(LoginRequiredMixin, TemplateView):
     name = "archive"
     template = "archive.html"
 
     def get(self, request, *args, **kvargs):
-        if request.user.is_anonymous:
-            return redirect("login")
         context = {}
         context["name"] = self.name
         tasks = Task.objects.filter(author=request.user).filter(in_list=False)
@@ -65,8 +62,11 @@ class ArchiveView(TemplateView):
     def post(self, request, *args, **kvargs):
         id = request.POST["id"]
         if request.POST["action"] == "del":
-            task = Task.objects.get(pk=id)
-            task.delete()
+            try:
+                task = Task.objects.get(pk=id, author=request.user)
+                task.delete()
+            except:
+                return redirect("archive")
         elif request.POST["action"] == "back":
             task = Task.objects.get(pk=id)
             task.in_list = True
@@ -78,8 +78,6 @@ class LoginView(TemplateView):
     template = "registration/login.html"
 
     def get(self, request, *args, **kwargs):
-        if not request.user.is_anonymous:
-            return redirect("tasks")
         context = {}
         context["name"] = "Login"
         form = LoginForm()
